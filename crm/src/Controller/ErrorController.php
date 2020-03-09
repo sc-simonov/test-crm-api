@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ErrorController extends AbstractController
 {
-    public function index(\Exception $exception, $logger)
+    public function index($exception, $logger)
     {
         return $this->json([
             'error' => $exception->getMessage(),
