@@ -12,6 +12,7 @@ class ErrorController extends AbstractController
         return $this->json([
             'error' => $exception->getMessage(),
             'code' => $exception->getStatusCode(),
+            'line' => $exception->getFile().':'.$exception->getLine(),
         ], $exception->getStatusCode());
     }
 }

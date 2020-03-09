@@ -25,3 +25,17 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\Service\:
+        resource: '../src/Service/*'
+        public: true
+
+    App\Bus\Handler\Command\:
+        resource: '../src/Bus/Handler/Command/*'
+        public: true
+        tags: [messenger.message_handler]
+
+    App\Bus\Handler\Query\:
+        resource: '../src/Bus/Handler/Query/*'
+        public: true
+        tags: [messenger.message_handler]
