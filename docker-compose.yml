@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: $PWD
+      dockerfile: $PWD/docker/php/Dockerfile
+    image: crm_test_api
+    volumes:
+      - $PWD:/app
+    environment:
+      TA_DB_PASS: ${TA_DB_PASS}
+      TA_APP_PORT: ${TA_APP_PORT}
+
+  db:
+    image: postgres
+    ports:
+      - ${TA_DB_PORT}:5432
+    volumes:
+      - $PWD/docker/db/data/pgsql:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: ${TA_DB_PASS}
+
+  nginx:
+    image: nginx
+    ports:
+      - ${TA_APP_PORT}:80
+    volumes:
+      - $PWD/docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - $PWD:/app
