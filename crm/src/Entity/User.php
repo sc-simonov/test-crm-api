@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @Orm\Table("`user`")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
 class User
