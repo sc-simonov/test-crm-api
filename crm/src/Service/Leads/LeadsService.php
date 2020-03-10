@@ -2,9 +2,8 @@
 
 namespace App\Service\Leads;
 
+use App\Bus\Command\Leads\CreateCommand;
 use App\Bus\Query\Leads\GetListQuery;
-use Doctrine\Common\Collections\Criteria;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -35,23 +34,38 @@ class LeadsService implements LeadsServiceInterface
     {
         $query = new GetListQuery();
 
-        foreach ($params as $name => $value) {
-            $method = 'set'.ucfirst($name);
+        return $this->bus->dispatch($this->fillObject($query, $params));
+    }
 
-            if (!method_exists($query, $method)) {
+    /**
+     * @param array $params
+     * @return
+     */
+    public function create(array $params)
+    {
+        $command = new CreateCommand();
+        $command = $this->bus->dispatch($this->fillObject($command, $params))->getMessage();
+
+        return $command->getErrors();
+    }
+
+    protected function fillObject($object, $params)
+    {
+        foreach ($params as $name => $value) {
+            $segments = explode('_', $name);
+            $segments = array_map(function($i) {
+                return ucfirst($i);
+            }, $segments);
+
+            $method = 'set'.implode($segments);
+
+            if (!method_exists($object, $method)) {
                 throw new BadRequestHttpException('Unknown option \''.$name.'\'');
             }
 
-            $query->$method($value);
+            $object->$method($value);
         }
 
-        return $this->bus->dispatch($query);
-    }
-
-    public function create()
-    {
-        return [
-            'method' => 'Create',
-        ];
+        return $object;
     }
 }

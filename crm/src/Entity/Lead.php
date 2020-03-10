@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Enum\LeadStatusEnum;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LeadRepository")
@@ -18,17 +20,21 @@ class Lead
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank
      */
     private $name;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank
+     * @Assert\Choice(choices=LeadStatusEnum::DROPDOWN, message="Wrong status.")
      */
     private $status;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Source", inversedBy="leads")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Missing or wrong source.")
      */
     private $source_id;
 
@@ -53,7 +59,7 @@ class Lead
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -65,7 +71,7 @@ class Lead
         return $this->status;
     }
 
-    public function setStatus(int $status): self
+    public function setStatus(?int $status): self
     {
         $this->status = $status;
 

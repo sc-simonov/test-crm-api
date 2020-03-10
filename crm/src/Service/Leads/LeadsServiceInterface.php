@@ -8,5 +8,5 @@ use Symfony\Component\Messenger\Envelope;
 interface LeadsServiceInterface
 {
     public function getList(array $params): Envelope;
-    public function create();
+    public function create(array $params);
 }

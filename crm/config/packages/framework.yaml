@@ -16,3 +16,5 @@ framework:
         log: true
 
     error_controller: App\Controller\ErrorController::index
+
+    validation: { enable_annotations: true }

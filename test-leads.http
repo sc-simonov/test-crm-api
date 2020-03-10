@@ -1,0 +1,57 @@
+### Without auth
+GET http://{{host}}:{{port}}/leads
+
+### With wrong token
+GET http://{{host}}:{{port}}/leads
+X-AUTH-TOKEN: WrongToken
+
+### With auth
+GET http://{{host}}:{{port}}/leads
+X-AUTH-TOKEN: {{token}}
+
+### Pagination
+GET http://{{host}}:{{port}}/leads?limit=5&offset=5
+X-AUTH-TOKEN: {{token}}
+
+### Filters
+GET http://{{host}}:{{port}}/leads?createdBy=6&status=2
+X-AUTH-TOKEN: {{token}}
+
+### Filters and pagination
+GET http://{{host}}:{{port}}/leads?createdBy=6&status=2&limit=1
+X-AUTH-TOKEN: {{token}}
+
+### Create Lead without token
+POST http://{{host}}:{{port}}/leads
+Content-Type: application/json
+
+{}
+
+### PUT Lead
+PUT http://{{host}}:{{port}}/leads
+Content-Type: application/json
+X-AUTH-TOKEN: {{token}}
+
+{}
+
+### Create Lead validation
+POST http://{{host}}:{{port}}/leads
+Content-Type: application/json
+X-AUTH-TOKEN: {{token}}
+
+{
+  "name": "My new lead"
+}
+
+### Create Lead with token
+POST http://{{host}}:{{port}}/leads
+Content-Type: application/json
+X-AUTH-TOKEN: {{token}}
+
+{
+  "name": "My new lead",
+  "source_id": 1,
+  "status": 2
+}
+
+###
