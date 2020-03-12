@@ -6,4 +6,5 @@ RUN mkdir -p /app \
     && echo "php_flag[display_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "php_admin_value[error_log] = /app/docker/php/logs/php-fpm.log" >> /usr/local/etc/php-fpm.d/www.conf \
     && echo "php_admin_flag[log_errors] = on" >> /usr/local/etc/php-fpm.d/www.conf
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 WORKDIR /app/crm
